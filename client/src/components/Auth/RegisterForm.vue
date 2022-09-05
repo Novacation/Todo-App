@@ -26,6 +26,7 @@ function toLogin() {
 }
 
 function checkInputs() {
+  let inputsOk = true
   nicknameError.value = {
     status: true
   }
@@ -47,6 +48,8 @@ function checkInputs() {
       status: false,
       msg: 'Nickname must have at least 5 characters'
     }
+
+    inputsOk = false
   }
 
   if (username.value.length < 8) {
@@ -54,6 +57,8 @@ function checkInputs() {
       status: false,
       msg: 'Username must have at least 8 characters'
     }
+
+    inputsOk = false
   }
 
   if (password.value.length < 8) {
@@ -61,6 +66,8 @@ function checkInputs() {
       status: false,
       msg: 'Password must have at least 8 characters'
     }
+
+    inputsOk = false
   }
 
   if (password.value !== confirmPassword.value) {
@@ -68,11 +75,26 @@ function checkInputs() {
       status: false,
       msg: 'Password and Confirm Password must be the same'
     }
+
+    inputsOk = false
   }
+
+  return inputsOk
 }
 
-function register() {
-  checkInputs()
+async function register() {
+  if (checkInputs()) {
+    //send data to perform the register
+    await axios({
+      url: '/auth/register',
+      method: 'POST',
+      data: {
+        nickname: nickname.value,
+        username: username.value,
+        password: password.value
+      }
+    })
+  }
 }
 </script>
 

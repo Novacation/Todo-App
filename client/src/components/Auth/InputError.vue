@@ -7,7 +7,7 @@ const props = defineProps({
 <template>
   <Transition name="fade" mode="out-in">
     <template v-if="!props.checkObj.status">
-      <p>{{ props.checkObj.msg }}</p>
+      <p class="text-xl text-red-500">{{ props.checkObj.msg }}</p>
     </template>
   </Transition>
 </template>

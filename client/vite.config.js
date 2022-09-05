@@ -11,5 +11,23 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    proxy: {
+      '/auth/register': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      },
+
+      '/auth/login': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      },
+
+      '/auth/token': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      }
+    }
   }
 })
