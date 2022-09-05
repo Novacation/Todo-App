@@ -6,6 +6,7 @@ import PasswordError from './InputErrors/PasswordError.vue'
 import ConfirmPasswordError from './InputErrors/ConfirmPasswordError.vue'
 import NicknameError from './InputErrors/NicknameError.vue'
 import InputError from './InputError.vue'
+import HeaderVue from './Header.vue'
 
 const emits = defineEmits(['to-login'])
 
@@ -80,15 +81,7 @@ function register() {
     class="w-screen overflow-y-auto h-screen sm:flex sm:flex-col sm:justify-start sm:items-center bg-gray-200">
     <div
       class="w-screen mt-4 mb-32 sm:w-3/4 sm:flex sm:flex-col sm:justify-start sm:items-center sm:shadow-md md:w-3/4 form-container">
-      <header
-        class="flex flex-row justify-start sm:justify-center items-center mb-20 w-full pl-6 sm:pl-0 pt-3 sm:pt-0">
-        <img src="../../assets/check.png" alt="Logo image" class="w-32" />
-        <p
-          id="taskerTitle"
-          class="text-3xl text-gray-800 ml-5 sm:ml-0 font-bold drop-shadow">
-          Tasker
-        </p>
-      </header>
+      <header-vue />
       <main class="w-full">
         <section class="flex flex-col justify-start px-6">
           <div class="relative flex flex-col w-full mb-20">

@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from '@vue/reactivity'
+import HeaderVue from './Header.vue'
 
 const emits = defineEmits(['to-register'])
 
@@ -16,15 +17,7 @@ const toRegister = () => {
     class="w-screen h-screen sm:flex flex-col justify-center items-center bg-gray-200">
     <div
       class="w-screen h-screen sm:w-3/4 sm:h-4/5 sm:flex sm:flex-col sm:justify-center sm:items-center shadow-md md:w-3/4 form-container">
-      <header
-        class="flex flex-row justify-start sm:justify-center items-center mb-20 w-full pl-6 sm:pl-0 pt-3 sm:pt-0">
-        <img src="../../assets/check.png" alt="Logo image" class="w-32" />
-        <p
-          id="taskerTitle"
-          class="text-3xl text-gray-800 ml-5 sm:ml-0 font-bold drop-shadow">
-          Tasker
-        </p>
-      </header>
+      <header-vue />
       <main class="w-full">
         <section class="flex flex-col justify-start px-6">
           <div class="relative flex flex-col w-full mb-20">
