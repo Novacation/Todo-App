@@ -7,6 +7,9 @@ import ConfirmPasswordError from './InputErrors/ConfirmPasswordError.vue'
 import NicknameError from './InputErrors/NicknameError.vue'
 import InputError from './InputError.vue'
 import HeaderVue from './Header.vue'
+import { useTokenStore } from '../../stores/token'
+import AuthPopup from './AuthPopup.vue'
+import router from '../../router'
 
 const emits = defineEmits(['to-login'])
 
@@ -20,9 +23,14 @@ const usernameError = ref({}),
   confirmPasswordError = ref({}),
   nicknameError = ref({})
 
+const popUpData = ref({
+  state: false,
+  status: true,
+  message: ''
+})
+
 function toLogin() {
   emits('to-login')
-  console.log(this)
 }
 
 function checkInputs() {
@@ -85,15 +93,38 @@ function checkInputs() {
 async function register() {
   if (checkInputs()) {
     //send data to perform the register
-    await axios({
-      url: '/auth/register',
-      method: 'POST',
-      data: {
-        nickname: nickname.value,
-        username: username.value,
-        password: password.value
-      }
-    })
+    const result = (
+      await axios({
+        url: '/auth/register',
+        method: 'POST',
+        data: {
+          nickname: nickname.value,
+          username: username.value,
+          password: password.value
+        }
+      })
+    ).data
+
+    if (result.status) {
+      useTokenStore().setToken(result.token)
+      //activate the "register confirmation" popup
+      popUpData.value.state = true
+      popUpData.value.status = true
+      popUpData.value.message = 'Succesfully Registered'
+      setTimeout(() => {
+        popUpData.value.state = false
+        //change route
+      }, 2000)
+      router.push({ name: 'mainPanel' })
+    } else {
+      popUpData.value.state = true
+      popUpData.value.status = false
+      popUpData.value.message = result.errorMessage
+
+      setTimeout(() => {
+        popUpData.value.state = false
+      }, 2000)
+    }
   }
 }
 </script>
@@ -104,7 +135,7 @@ async function register() {
     <div
       class="w-screen mt-4 mb-32 sm:w-3/4 sm:flex sm:flex-col sm:justify-start sm:items-center sm:shadow-md md:w-3/4 form-container">
       <header-vue />
-      <main class="w-full">
+      <main class="relative w-full">
         <section class="flex flex-col justify-start px-6">
           <div class="relative flex flex-col w-full mb-20">
             <input
@@ -220,6 +251,8 @@ async function register() {
             </button>
           </div>
         </section>
+
+        <auth-popup v-if="popUpData.state" :pop-up-state="popUpData" />
       </main>
     </div>
   </div>

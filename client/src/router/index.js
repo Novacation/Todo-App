@@ -1,23 +1,31 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Auth from "../views/Auth.vue";
+import { createRouter, createWebHistory } from 'vue-router'
+import { useTokenStore } from '../stores/token'
+import Auth from '../views/Auth.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/auth",
-      name: "auth",
+      path: '/auth',
+      name: 'auth',
       component: Auth,
+      beforeEnter: async (to, from, next) => {
+        const tokenStatus = await useTokenStore().verifyToken()
+        if (tokenStatus) {
+          await router.push({ name: 'mainPanel' })
+          next()
+        } else {
+          next()
+        }
+      }
     },
-    /* {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    } */
-  ],
-});
+    {
+      path: '/mytasks',
+      name: 'mainPanel',
 
-export default router;
+      component: () => import('../views/MainPanel.vue')
+    }
+  ]
+})
+
+export default router
